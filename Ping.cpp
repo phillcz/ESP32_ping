@@ -345,9 +345,12 @@ bool ping_start(IPAddress adr, int count=0, int interval=0, int size=0, int time
 
 	ping_seq_num = 0;
 
-	while ((ping_seq_num < count) && (!stopped)) {
+	while (true) {
 		if (ping_send(s, &ping_target, size) == ERR_OK) {
 			ping_recv(s);
+		}
+		if ((ping_seq_num >= count) || (stopped) ) {
+			break;
 		}
 		delay( interval*1000L);
 	}
